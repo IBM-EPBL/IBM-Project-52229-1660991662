@@ -1,23 +1,20 @@
 import random
-import time
-while(1):
-    temperature=random.randint(0,200) #TO GENERATE RANDOM NUMBER FOR TEMPERATURE
-    print("Temperature="+str(temperature)+"°F")
-    print("Temperature in celcius : "+str(((temperature-32)*5)//9)+"°C")
-    
-  if(temperature>50): #IF TEMPERATURE GOES HIGH THEN ALARM IS ON
-        print("Temperature is too high")
-        print("The Alarm is ON")
-    else:  #TEMPERATURE VALUE GOES NORMAL THEN ALARM IS OFF
-            print("Temperature is normal")
-            print("The Alaram is OFF")
 
-            humidity=random.randint(0,100)  #TO GENERATE RANDOM NUMER FOR HUMIDITY
-            print("Humidity="+str(humidity)+"%")
+#Assigning f - fahrenheit
 
-            if(humidity<50):
-                print("Humidity is less tha 50")
-            else:
-                    print("Humidity is greater than 50")
 
-                    time.sleep(2)
+f=random.uniform(10.0,70.0)
+print("temperature is",f)
+if (f>56):
+    print ("Alarm is on since the temperature is above 65 fahrenheit")
+else:
+    print ("Alarm is off since the temperature is below 65 fahrenheit")
+
+#Assingning a-humidity
+
+h=random.uniform(20,100)
+print ("humidity is")
+if (h>56):
+    print("Alarm is on since the humidity is above 36%")
+else:
+    print("Alarm is off since the humidity is below 36%")
