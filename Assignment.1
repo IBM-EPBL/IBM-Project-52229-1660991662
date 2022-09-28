@@ -1,57 +1,96 @@
-// C++ code
-//
-int trig=4;
-int echo=3;
-void setup()
-{
+#include<Servo.h>
+int us = 6;
+int servo = 7;
+
+Servo servo1;
+
+void setup() {
   Serial.begin(9600);
-  pinMode(12, OUTPUT);
-  pinMode(2, OUTPUT);
-  pinMode(8,INPUT);
-  pinMode(7,OUTPUT);
-  pinMode(trig,OUTPUT);
-  pinMode(echo,INPUT);
+  servo1.attach(servo);
+  pinMode(2,INPUT);
+  pinMode(4,OUTPUT);
+  pinMode(11,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(13,OUTPUT);
+  pinMode(A0,INPUT);
+  digitalWrite(2,LOW);
+  digitalWrite(11,HIGH);
   
 }
 
-void loop()
-{
-  float dur=pulseIn(echo,HIGH);
-  float dist=(dur*0.0343)/2;
-  int m=digitalRead(8);
-  double a=analogRead(A3);
-  double v=a/1024;
-  double tvolt=v*5;
-  double o=tvolt-0.5;
-  double t=o*100;
-  if (t>50)
-  {
-  digitalWrite(2,HIGH);
-  }
-  else
-  {
-  digitalWrite(2,LOW);
-  }
-    if(m==1)
-    {
-      digitalWrite(12, HIGH);;
-    }
-  else
-  {
-   digitalWrite(12, LOW); 
-  }
-  //digitalWrite(trig,LOW);
-  //digitalWrite(trig,HIGH);
+void loop() {
   
-  if(dist<=100)
+  long duration, inches, cm;
+
+  pinMode(us, OUTPUT);
+  digitalWrite(us, LOW);
+  delayMicroseconds(2);
+  digitalWrite(us, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(us, LOW);
+
+  
+  pinMode(us, INPUT);
+  duration = pulseIn(us, HIGH);
+
+ 
+  inches = microsecondsToInches(duration);
+  cm = microsecondsToCentimeters(duration);
+
+ 
+  
+  servo1.write(0);
+  
+  if(cm < 30)
   {
-  digitalWrite(7,HIGH);
-    
+    servo1.write(120);
+    Serial.println("A Person Arrived, Door is Opening......");
+    delay(2000);
   }
   else
   {
-    digitalWrite(7,LOW);
-    
+    servo1.write(0);
+    Serial.println("Door is Closed.....");
   }
   
+  
+  int pir = digitalRead(2);
+  
+  if(pir == HIGH)
+  {
+    digitalWrite(4,HIGH);
+    delay(3000);
+  }
+  else if(pir == LOW)
+  {
+    digitalWrite(4,LOW);
+  }
+  
+  float value=analogRead(A0);
+  float temp=(((value/1024)*5.0199)-0.5)*100;
+  
+  
+  Serial.print("temp is ");
+  Serial.println(temp);
+  delay(3000);
+  
+  
+  if(temp > 20)
+  {
+    digitalWrite(12,HIGH);
+    digitalWrite(13,LOW);
+  }
+  else
+  {
+    digitalWrite(12,LOW);
+    digitalWrite(13,LOW);
+  }
+}
+
+long microsecondsToInches(long microseconds) {
+  return microseconds / 74 / 2;
+}
+
+long microsecondsToCentimeters(long microseconds) {
+  return microseconds / 29 / 2;
 }
